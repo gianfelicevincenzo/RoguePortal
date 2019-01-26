@@ -15,6 +15,8 @@ LOG="/tmp/rogueportal.log"
 i_wireless=""
 i_deauth=""
 i_connect=""
+password=""
+essid=""
 mon_deauth=""
 channel="$(($(($RANDOM%11))+1))" # Default
 persistent_connection=0   # Mantiene la connessione attiva permettendo al client di poter navigare in internet sul nostro AP malevolo
@@ -33,11 +35,11 @@ function logo() {
 
 cat <<EOF
 
- _________.                            ___.                                       
- \______   \ ____   ____  __ __   ____/  _ \___________._.______.______.___       
-  |       _//  _ \ / ___\|  |  \./ __ \ <_> \   . \ <_> )\__  ___\  <_> \  \      
-  |    |   (  <_> ) /_/  >  |  /\  ___/\   / \ <_> \   _/_  \  \  \   _  \  \__.  
-  |____|_  /\____/\___  /|____/  \___  >\  \  \_____\  \  \  \__\  \___\\___\_____> 
+ _________.                            ___.
+ \______   \ ____   ____  __ __   ____/  _ \___________._.______.______.___
+  |       _//  _ \ / ___\|  |  \./ __ \ <_> \   . \ <_> )\__  ___\  <_> \  \
+  |    |   (  <_> ) /_/  >  |  /\  ___/\   / \ <_> \   _/_  \  \  \   _  \  \__.
+  |____|_  /\____/\___  /|____/  \___  >\  \  \_____\  \  \  \__\  \___\\___\_____>
          \/      /_____/             \/  \__\        \_/\_/
 
                 * A Phishing WIFI Rogue Captive Portal! Enjoy! *
@@ -53,10 +55,10 @@ function help() {
    echo " -e		ESSID della rete"
    echo " -f 		Numero pagina di phishing. Accetta solo valore numerico"
    echo "                Digita '$0 -l'"
+   echo " -i             Interfaccia collegata ad internet"
    echo ""
    echo " [ OPTIONAL ]"
    echo ""
-   echo " -i      Interfaccia collegata ad internet"
    echo " -l		Lista delle pagine di phishing disponibili"
    echo " -c		Canale della rete"
    echo " -m		Mac address da utilizzare"
@@ -171,6 +173,10 @@ function flush_device() {
    ip addr flush dev $i_wireless &> /dev/null
    ifconfig $i_wireless up
 
+   dhclient -r $i_connect &> /dev/null
+   ip addr flush dev $i_connect &> /dev/null
+   ifconfig $i_connect up 
+   
    if [ ! -z $i_deauth ]; then
       ifdown $i_deauth &> /dev/null
       ifconfig $i_deauth down &> /dev/null
@@ -293,31 +299,31 @@ while getopts "i:w:e:a:Cf:m:c:lp" arg; do
           mac_device_deauth="`ifconfig $i_deauth | grep -A1 $i_deauth | grep ether | sed -s 's/^[[:space:]]*//' | cut -d" " -f 2`"
           ;;
      c)
-          channel=$OPTARG
-          ;;
+         channel=$OPTARG
+         ;;
      m)
-          mac_chng=$OPTARG
-          ;;
+         mac_chng=$OPTARG
+         ;;
      C)
-          clone=1
-          ;;
+         clone=1
+         ;;
      p)
-     	  persistent_connection=1
-	  ;;
+     	   persistent_connection=1
+	      ;;
      f)
-    	  phishing_page=$OPTARG
+    	   phishing_page=$OPTARG
 
-          echo "$phishing_page" | grep -E "^[0-9]" &> /dev/null
+         echo "$phishing_page" | grep -E "^[0-9]" &> /dev/null
 
-          if [ "$?" != "0" ]; then
-             echo "Questa opzione accetta solo valori numerici"
-             exit 1
-          fi
+         if [ "$?" != "0" ]; then
+            echo "Questa opzione accetta solo valori numerici"
+            exit 1
+         fi
 
-    	  if [ "$OPTARG" -gt ${#page_p[@]} ]; then
-    	     echo "Non è stata trovata nessuna pagina di phishing con questo indicativo($OPTARG)"
-    	     exit 1
-    	  fi
+    	   if [ "${page_p[$phishing_page]}" == "" ]; then
+    	      echo "Non è stata trovata nessuna pagina di phishing con questo indicativo($OPTARG)"
+    	      exit 1
+    	   fi
     	  ;;
      *)
           help
@@ -346,6 +352,10 @@ if [ -z "$phishing_page" ]; then
    echo "Digita '$0 -l'"
    exit 1
 fi
+if [ -z "$i_connect" ]; then
+   echo "Prima devi connetterti ad una rete..."
+   exit 1
+fi
 
 echo $PID > /tmp/$tool_program.pid && chown www-data:www-data /tmp/$tool_program.pid
 
@@ -353,6 +363,36 @@ trap control_c_sigterm SIGINT
 
 flush_device
 flush_iptables
+
+#Connessione ad una rete
+count=0;
+for essid in `iwlist $i_connect scan | grep ESSID | unexpand | sed 's/^[[:space:]]*//' | cut -d":" -f 2`
+do
+   count=$((count+1))
+   echo -e "\t($count) $essid"
+done
+
+echo ""
+read -p "Scrivi il nome della rete a cui vuoi connetterti: " essid
+read -p "Inserisci la password della rete: " pwd
+
+wpa_passphrase "$essid" "$pwd" > /tmp/wpa.conf
+wpa_supplicant -i $i_connect -c wpa.conf -B &> /dev/null
+
+if [ "$?" == "0" ]; then
+   dhclient $i_connect
+else
+   wpa_supplicant -Dwext -i $i_connect -c /tmp/wpa.conf -B &> /dev/null
+
+   if [ "$?" == "0" ]; then
+      dhclient $i_connect
+   else
+      echo ""
+      echo "Impossibile collegarsi alla rete specificata"
+      echo "Hai sbagliato ad inserire i dati?"
+      exit 1
+   fi
+fi
 
 if [ $clone -eq 1 ]; then
    iwlist $i_wireless scan | grep ESSID | grep -E "\<$ssid_portal\>" &> /dev/null
