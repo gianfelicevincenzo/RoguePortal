@@ -81,6 +81,8 @@ $ sudo ./rogueportal -h
  -w		Interfaccia Wireless
  -e		ESSID della rete
  -f		Numero pagina di phishing. Accetta solo valore numerico
+              Digita './rogueportal.sh -l'
+ -i           Interfaccia collegata ad internet
  
  [ OPTIONAL ]
  

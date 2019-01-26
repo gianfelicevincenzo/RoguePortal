@@ -374,7 +374,7 @@ done
 
 echo ""
 read -p "Scrivi il nome della rete a cui vuoi connetterti: " essid
-read -p "Inserisci la password della rete: " pwd
+read -p "Inserisci la password della rete: " password
 
 wpa_passphrase "$essid" "$pwd" > /tmp/wpa.conf
 wpa_supplicant -i $i_connect -c wpa.conf -B &> /dev/null
