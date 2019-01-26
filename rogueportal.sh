@@ -49,7 +49,7 @@ EOF
 }
 
 function help() {
-   echo " Usage: wifi.sh -w [wireless-device] -e [AP network name/target] -f [Page Phishing]";
+   echo " Usage: wifi.sh -w [wireless-device] -e [AP network name/target] -f [Page Phishing] -i [interface-internet]";
    echo ""
    echo " -w		Interfaccia Wireless"
    echo " -e		ESSID della rete"

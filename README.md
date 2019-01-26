@@ -76,13 +76,13 @@ $ sudo ./rogueportal -h
                  
                   * A Phishing WIFI Rogue Captive Portal! Enjoy! *
                                  
- Usage: wifi.sh -w [wireless-device] -e [AP network name/target] -f [Page Phishing]
+ Usage: wifi.sh -w [wireless-device] -e [AP network name/target] -f [Page Phishing] -i [interface-internet]
                                  
  -w		Interfaccia Wireless
  -e		ESSID della rete
  -f		Numero pagina di phishing. Accetta solo valore numerico
-              Digita './rogueportal.sh -l'
- -i           Interfaccia collegata ad internet
+                 Digita './rogueportal.sh -l'
+ -i              Interfaccia collegata ad internet
  
  [ OPTIONAL ]
  
