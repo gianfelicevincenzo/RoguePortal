@@ -14,6 +14,7 @@ config_apache="default.conf"
 LOG="/tmp/rogueportal.log"
 i_wireless=""
 i_deauth=""
+i_connect=""
 mon_deauth=""
 channel="$(($(($RANDOM%11))+1))" # Default
 persistent_connection=0   # Mantiene la connessione attiva permettendo al client di poter navigare in internet sul nostro AP malevolo
@@ -55,6 +56,7 @@ function help() {
    echo ""
    echo " [ OPTIONAL ]"
    echo ""
+   echo " -i      Interfaccia collegata ad internet"
    echo " -l		Lista delle pagine di phishing disponibili"
    echo " -c		Canale della rete"
    echo " -m		Mac address da utilizzare"
@@ -226,9 +228,19 @@ logo
 
 [ $# -eq 0 ] && { help ; exit 1; }
 
-while getopts "w:e:a:Cf:m:c:lp" arg; do
+while getopts "i:w:e:a:Cf:m:c:lp" arg; do
    case $arg in
 
+     i)
+          i_connect=$OPTARG
+
+          find /sys/class/net ! -type d |  grep "\<$i_connect\>" &> /dev/null
+
+          if  [ "$?" != "0" ]; then
+             echo "Interfaccia '$i_connect' non trovata"
+             exit 1
+          fi
+          ;;
      w)
           i_wireless=$OPTARG
           find /sys/class/net ! -type d |  grep "\<$i_wireless\>" &> /dev/null
