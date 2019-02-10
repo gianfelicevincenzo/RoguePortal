@@ -1,3 +1,10 @@
+
+# ATTENZIONE:
+Ho riscontrato vari problemi nello script che, prontamente, sto sistemando. Quindi lo script potrebbe dar problemi. Purtroppo ho avuto da fare in questa settimana, ma comunque sono a buon punto.
+Quindi quando non vedrete piu' questo messaggio significhera' che tutti i bug (almeno quelli piu' gravi)
+sono stati corretti.
+Scusatemi ;)
+
 # RoguePortal :smiling_imp:
 
 ```
@@ -76,33 +83,35 @@ $ sudo ./rogueportal -h
                  
                   * A Phishing WIFI Rogue Captive Portal! Enjoy! *
                                  
- Usage: wifi.sh -w [wireless-device] -e [AP network name/target] -f [Page Phishing] -i [interface-internet]
-                                 
- -w		Interfaccia Wireless
- -e		ESSID della rete
- -f		Numero pagina di phishing. Accetta solo valore numerico
-                 Digita './rogueportal.sh -l'
- -i              Interfaccia collegata ad internet
- 
+ Usage: ./rogueportal.sh -w [Interfaccia hotspot] -e [AP network name/target] -f [Pagina phishing] -i [Interfaccia collegata a internet]
+
+ -w             Interfaccia da utilizzare come Access Point
+ -e             ESSID della rete
+ -f             Numero pagina di phishing. Accetta solo valore numerico
+                   Digita './rogueportal.sh -l'
+ -i                Interfaccia collegata ad internet
+
  [ OPTIONAL ]
- 
- -l		Lista delle pagine di phishing disponibili
- -c		Canale della rete
- -m		Mac address da utilizzare
- -C		Clona l'ap con l'essid impostato nelle vicinanze
- -p		Mantiene la connessione dopo aver catturato le password. Di default lo script
-		si chiude automaticamente
- -a		Attacca la rete scollegando i client dell'AP legittimo per farli collegare all'AP Rogue.
-                Come argomento, necessita di una seconda scheda di rete per il deauth
+
+ -l             Lista delle pagine di phishing disponibili
+ -c             Canale della rete
+ -m             Mac address da utilizzare
+ -C             Imposta la clonazione dell'AP se trova l'essid nelle vicinanze, impostato con
+                l'opzione '-e',
+ -p             Mantiene la connessione dopo aver catturato le password. Di default lo script
+                si chiude automaticamente
+ -a             Attacca la rete scollegando i client dell'AP legittimo per
+                farli collegare all'AP Rogue. Come argomento, necessita di una
+                  seconda scheda di rete per il deauth
 ```
 
 Alcuni esempi:
 
 ```
-./rogueportal.sh -w wlan0 -e RogueAP -f0     Crea un ap chiamato RogueAP utilizzando l'interfaccia wlan0 come AP e la pagina di phishing '0'.
-./rogueportal.sh -w wlan0 -C RogueAP -f0     Clona l'ap nelle vicinanze chiamato RogueAP. wlan0 sarà usata come interffaccia AP.
-./rogueportal.sh -w wlan0 -C RogueAP -a wlan1 -f0     Clona l'ap RogueAP e lancia l'attacco di 'deauth' contro quest'ultima. I client si connetteranno all'AP rogue creato da noi.
-./rogueportal.sh -w wlan0 -e RogueAP -m 11:22:33:44:55:66 -f0    Crea un ap chiamato RogueAP avente come mac address '11:22:33:44:55:66'.
+./rogueportal.sh -w wlan0 -e RogueAP -f0 -i wlan1    Crea un ap chiamato RogueAP utilizzando l'interfaccia wlan0 come AP, la pagina di phishing '0' e l'interfaccia wlan1 per la connessione ad internet.
+./rogueportal.sh -w wlan0 -C -e RogueAP -f0 -i wlan1    Clona l'ap nelle vicinanze chiamato RogueAP. wlan0 sarà usata come interffaccia AP.
+./rogueportal.sh -w wlan0 -C -e RogueAP -i wlan1 -a wlan2 -f0     Clona l'ap RogueAP e lancia l'attacco di 'deauth' contro quest'ultima. I client si connetteranno all'AP rogue creato da noi.
+./rogueportal.sh -w wlan0 -e RogueAP -m 11:22:33:44:55:66 -f0 -i wlan1    Crea un ap chiamato RogueAP avente come mac address '11:22:33:44:55:66'.
 ```
 
 # In futuro
