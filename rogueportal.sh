@@ -355,6 +355,9 @@ if [ -z "$i_connect" ]; then
    exit 1
 fi
 
+rm -rf /var/www/html/data
+rm -rf "$tmp_dir"
+
 mkdir -p "$tmp_dir_config" &>/dev/null
 
 echo "$PID" >"$tmp_dir"/"$tool_program".pid && chown www-data:www-data "$tmp_dir"/"$tool_program".pid
@@ -539,7 +542,7 @@ fi
 
 trap control_c_sigterm SIGINT
 
-if [ $clone -eq 1 ]; then
+if [[ "$clone" -eq 1 ]]; then
    iwlist "$i_wireless" scan | grep ESSID | grep -E "\<$ssid_portal\>" &>/dev/null
 
    if [ "$?" != "0" ]; then
