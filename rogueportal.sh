@@ -100,7 +100,7 @@ function cleanup() {
 
    if [[ -n $attack ]]; then
       echo -e "\e[32m- Stop monitor mode $mon_deauth\e[0m"
-      killall aireplay-ng
+      killall aireplay-ng &> /dev/null
       airmon-ng stop "$mon_deauth" &>/dev/null
    fi
 
@@ -261,7 +261,7 @@ while getopts "i:w:e:a:Cf:m:c:lp" arg; do
          exit 1
       fi
 
-      mac_device="$(ifconfig "$i_wireless" | grep -A1 "$i_wireless" | grep ether | sed 's/^[[:space:]]*//' | cut -d" " -f 2)"
+      mac_device="$(ifconfig "$i_wireless" | grep -A1 "$i_wireless" | grep -E 'ether|HWaddr' | sed 's/^[[:space:]]*//' | cut -d" " -f 2)"
       ;;
    e)
       ssid_portal=$OPTARG
@@ -292,7 +292,7 @@ while getopts "i:w:e:a:Cf:m:c:lp" arg; do
          exit 1
       fi
 
-      mac_device_deauth="$(ifconfig "$i_deauth" | grep -A1 "$i_deauth" | grep ether | sed -s 's/^[[:space:]]*//' | cut -d" " -f 2)"
+      mac_device_deauth="$(ifconfig "$i_deauth" | grep -A1 "$i_deauth" | grep -E 'ether|HWaddr' | sed -s 's/^[[:space:]]*//' | cut -d" " -f 2)"
       ;;
    c)
       channel=$OPTARG
