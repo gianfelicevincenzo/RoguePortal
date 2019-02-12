@@ -261,7 +261,7 @@ while getopts "i:w:e:a:Cf:m:c:lp" arg; do
          exit 1
       fi
 
-      mac_device="$(ifconfig "$i_wireless" | grep -A1 "$i_wireless" | grep -E 'ether|HWaddr' | sed 's/^[[:space:]]*//' | cut -d" " -f 2)"
+      mac_device="$(cat /sys/class/net/"$i_wireless"/address)"
       ;;
    e)
       ssid_portal=$OPTARG
@@ -292,7 +292,7 @@ while getopts "i:w:e:a:Cf:m:c:lp" arg; do
          exit 1
       fi
 
-      mac_device_deauth="$(ifconfig "$i_deauth" | grep -A1 "$i_deauth" | grep -E 'ether|HWaddr' | sed -s 's/^[[:space:]]*//' | cut -d" " -f 2)"
+      mac_device_deauth="$(cat /sys/class/net/"$i_deauth"/address)"
       ;;
    c)
       channel=$OPTARG
