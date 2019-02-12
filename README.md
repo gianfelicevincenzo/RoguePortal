@@ -1,12 +1,12 @@
 # RoguePortal :smiling_imp:
 
 ```
- _________.                            ___.                                       
- \______   \ ____   ____  __ __   ____/  _ \___________._.______.______.___       
-  |       _//  _ \ / ___\|  |  \./ __ \ <_> \   . \ <_> )\__  ___\  <_> \  \      
-  |    |   (  <_> ) /_/  >  |  /\  ___/\   / \ <_> \   _/_  \  \  \   _  \  \__.  
-  |____|_  /\____/\___  /|____/  \___  >\  \  \_____\  \  \  \__\  \___\___\_____> 
-         \/      /_____/             \/  \__\        \_/\_/
+ _________.                            ___.
+ \______   \ ____   ____  __ __   ____/  _ \___________._.______._______.___
+  |       _//  _ \ / ___\|  |  \./ __ \ <_> \   . \ <_> )\__   __\  <_>  \  \
+  |    |   (  <_> ) /_/  >  |  /\  ___/\   / \ <_> \   _/_  \  \  \   _   \  \___.
+  |____|_  /\____/\___  /|____/  \___  >\  \  \_____\  \  \  \_/   \___\\___\_____\
+         \/      /_____/             \/  \_/         \_/\_/
 ```    
 **A Phishing Rogue Captive Portal! New concept for hacking:** *"Simply and fast for the lazy"*
 
@@ -80,7 +80,7 @@ __________.                            ___.
  -w             Interfaccia da utilizzare come Access Point
  -e             ESSID della rete o della rete da attaccare
  -f             Numero pagina di phishing. Accetta solo valore numerico
- -i                Interfaccia collegata ad internet
+ -i             Interfaccia collegata ad internet
 
  [ OPTIONAL ]
 
@@ -92,7 +92,7 @@ __________.                            ___.
  -p             Mantiene la connessione dopo aver catturato le password. Di default lo script
                 si chiude automaticamente
  -a             Attacco deauth contro l'AP legittimo, impostato con '-e'. Come argomento,
-                  necessita di un interfaccia per il deauth
+                necessita di un interfaccia per il deauth
 
 ```
 
