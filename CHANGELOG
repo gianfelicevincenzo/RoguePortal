@@ -1,0 +1,7 @@
+[02/2/2019]
+
+* Aggiunta un form di richiesta delle credenziali per la connessione a una rete
+* Fix errore chiusura programma dopp aver catturato le credenziali
+* Sistemato l'output delle credenziali catturate con la pagina 'social_phishing'
+* Fix collegamento ad internet
+* Vari bugfix e miglioramenti
